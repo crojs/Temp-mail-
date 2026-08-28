@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TempMail Pro – Free Temporary Email Service</title>
+  <meta name="description" content="Get instant temporary email address for sign-ups, verification codes, and spam-free inbox. No registration required.">
+  <link rel="canonical" href="https://tempmailpro.com/">
+  <meta property="og:title" content="TempMail Pro – Instant Temporary Email">
+  <meta property="og:description" content="Free disposable email address for anonymous sign-ups and verification.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TempMail Pro",
+    "url": "https://tempmailpro.com",
+    "applicationCategory": "Utility"
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar" aria-label="Main navigation">
+    <a href="index.html" class="logo">
+      <i class="fas fa-envelope-open-text"></i>
+      <span>TempMail Pro</span>
+    </a>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
+      </button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" title="Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-container">
+      <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
+      <a href="privacy.html" class="menu-item"><i class="fas fa-lock"></i> Privacy Policy</a>
+      <a href="terms.html" class="menu-item"><i class="fas fa-file-alt"></i> Terms of Service</a>
+      <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> About</a>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="email-card" aria-label="Temporary email address">
+      <span class="email-display" id="tempEmail">Generating email...</span>
+      <div class="email-actions">
+        <span class="status-badge"><i class="fas fa-bolt"></i> Active</span>
+        <button class="btn btn-warning" id="generateNewBtn" title="Generate new email"><i class="fas fa-plus-circle"></i> New</button>
+        <button class="btn" id="refreshBtn" title="Refresh inbox"><i class="fas fa-sync-alt"></i></button>
+        <button class="btn btn-primary" id="copyEmailBtn" title="Copy address"><i class="far fa-copy"></i> Copy</button>
+      </div>
+    </section>
+
+    <section class="feature-grid" aria-label="Features">
+      <span class="feature-chip"><i class="fas fa-shield-alt"></i> Real Codes</span>
+      <span class="feature-chip"><i class="fas fa-bell"></i> Auto Refresh</span>
+      <span class="feature-chip"><i class="fas fa-code"></i> Sign Up Ready</span>
+      <span class="feature-chip"><i class="fas fa-chart-line"></i> No Ads</span>
+    </section>
+
+    <section class="inbox-section" aria-label="Inbox">
+      <div class="inbox-header">
+        <h2 class="inbox-title">Inbox</h2>
+        <span class="inbox-count" id="mailCount">0</span>
+      </div>
+      <div class="inbox-list" id="inboxList">
+        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>&copy; <span id="year"></span> TempMail Pro. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
