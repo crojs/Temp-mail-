@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // localStorage নিরাপদ হেল্পার
   const storage = {
     available: true,
     get(key) { 

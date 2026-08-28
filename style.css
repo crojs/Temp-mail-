@@ -84,7 +84,7 @@ body {
   gap: 8px;
 }
 
-/* ---------- থিম টগল বাটন ---------- */
+/* ---------- থিম টগল ---------- */
 .theme-toggle {
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -97,8 +97,6 @@ body {
   cursor: pointer;
   color: var(--text);
   transition: var(--transition);
-  position: relative;
-  overflow: hidden;
 }
 .theme-toggle:hover {
   background: var(--border);
@@ -106,10 +104,6 @@ body {
 }
 .theme-toggle i {
   font-size: 1.2rem;
-  transition: transform 0.4s ease;
-}
-.theme-toggle:hover i {
-  transform: scale(1.2);
 }
 
 /* ---------- হ্যামবার্গার মেনু ---------- */

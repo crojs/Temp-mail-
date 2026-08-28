@@ -1,0 +1,5 @@
+# Redirect www to non-www
+https://www.mailall.netlify.app/* https://mailall.netlify.app/:splat 301!
+
+# Custom 404 page
+/* /404.html 404
