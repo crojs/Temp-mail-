@@ -62,15 +62,35 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Modal elements
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalClose = document.getElementById('modalClose');
+  const modalSubject = document.getElementById('modalSubject');
+  const modalSender = document.getElementById('modalSender');
+  const modalBody = document.getElementById('modalBody');
+
+  if (modalOverlay && modalClose) {
+    modalClose.addEventListener('click', function() {
+      modalOverlay.classList.remove('active');
+    });
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('active');
+      }
+    });
+  }
+
   // TempMail API (শুধু হোম পেজে)
   const tempEmailDisplay = document.getElementById('tempEmail');
   if (!tempEmailDisplay) return;
 
   const API_BASE = 'https://api.mail.gw';
+  const PROXY_URL = 'https://api.allorigins.win/raw?url=';
   let currentAccount = null;
   let token = null;
   let refreshInterval = null;
   let isGenerating = false;
+  let fetchInProgress = false;
 
   const inboxList = document.getElementById('inboxList');
   const mailCount = document.getElementById('mailCount');
@@ -79,6 +99,21 @@ document.addEventListener('DOMContentLoaded', function() {
   const generateNewBtn = document.getElementById('generateNewBtn');
 
   if (!inboxList || !mailCount || !copyEmailBtn || !refreshBtn || !generateNewBtn) return;
+
+  // CORS সমস্যা সমাধানে fetch wrapper
+  async function fetchWithProxy(url, options = {}) {
+    // প্রথমে সরাসরি চেষ্টা করি
+    try {
+      const directResponse = await fetch(url, options);
+      if (directResponse.ok) return directResponse;
+    } catch (directError) {
+      // সরাসরি ব্যর্থ হলে proxy ব্যবহার করি
+    }
+    // Proxy ব্যবহার
+    const proxiedUrl = PROXY_URL + encodeURIComponent(url);
+    const proxyResponse = await fetch(proxiedUrl, options);
+    return proxyResponse;
+  }
 
   let storedAccount = storage.get('tempmail_account_mailgw');
   let storedToken = storage.get('tempmail_token_mailgw');
@@ -89,10 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
         currentAccount = JSON.parse(storedAccount);
         token = storedToken;
         tempEmailDisplay.textContent = currentAccount.address;
-        fetchMessages();
+        await fetchMessages();
         startAutoRefresh();
         return;
-      } catch (e) {}
+      } catch (e) {
+        console.warn('Stored account invalid, creating new one');
+      }
     }
     await createNewAccount();
   }
@@ -100,26 +137,31 @@ document.addEventListener('DOMContentLoaded', function() {
   async function createNewAccount() {
     if (isGenerating) return;
     isGenerating = true;
-    inboxList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Creating new email...</div>';
+    showLoading('Creating new email...');
     try {
-      const domainsRes = await fetch(`${API_BASE}/domains`);
+      const domainsRes = await fetchWithProxy(`${API_BASE}/domains`);
+      if (!domainsRes.ok) throw new Error('Failed to fetch domains');
       const domainsData = await domainsRes.json();
       const domains = domainsData['hydra:member'] || [];
+      if (domains.length === 0) throw new Error('No domains available');
       const domain = domains[0].domain;
+
       const username = 'user_' + Math.random().toString(36).substring(2, 10);
       const password = 'Pass_' + Math.random().toString(36).substring(2, 12);
       const address = `${username}@${domain}`;
 
-      const accountRes = await fetch(`${API_BASE}/accounts`, {
+      const accountRes = await fetchWithProxy(`${API_BASE}/accounts`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ address, password })
       });
+      if (!accountRes.ok) throw new Error('Account creation failed');
       const accountData = await accountRes.json();
 
-      const tokenRes = await fetch(`${API_BASE}/token`, {
+      const tokenRes = await fetchWithProxy(`${API_BASE}/token`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ address, password })
       });
+      if (!tokenRes.ok) throw new Error('Token fetch failed');
       const tokenData = await tokenRes.json();
       token = tokenData.token;
 
@@ -128,107 +170,254 @@ document.addEventListener('DOMContentLoaded', function() {
       storage.set('tempmail_token_mailgw', token);
 
       tempEmailDisplay.textContent = currentAccount.address;
-      fetchMessages();
+      await fetchMessages();
       startAutoRefresh();
     } catch (error) {
-      inboxList.innerHTML = '<div class="no-mails"><i class="fas fa-exclamation-triangle"></i><br>Failed to create email.</div>';
+      console.error('Error creating account:', error);
+      showError('Failed to create email. Please try again.');
+      setTimeout(() => {
+        if (!currentAccount) createNewAccount();
+      }, 3000);
     } finally {
       isGenerating = false;
     }
   }
 
   async function fetchMessages() {
-    if (!token) return;
+    if (fetchInProgress) return;
+    if (!token) {
+      await createNewAccount();
+      return;
+    }
+    fetchInProgress = true;
     try {
-      const res = await fetch(`${API_BASE}/messages`, {
+      const res = await fetchWithProxy(`${API_BASE}/messages`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401) {
         storage.remove('tempmail_account_mailgw');
         storage.remove('tempmail_token_mailgw');
+        currentAccount = null;
+        token = null;
         await createNewAccount();
         return;
       }
+      if (!res.ok) throw new Error('Failed to fetch messages');
       const data = await res.json();
       const messages = data['hydra:member'] || [];
-      displayMessages(messages);
+      await displayMessages(messages);
     } catch (error) {
-      setTimeout(fetchMessages, 3000);
+      console.error('Fetch messages error:', error);
+    } finally {
+      fetchInProgress = false;
     }
   }
 
-  function displayMessages(messages) {
-    mailCount.textContent = messages.length;
-    if (messages.length === 0) {
-      inboxList.innerHTML = '<div class="no-mails"><i class="far fa-envelope-open"></i><br>No messages yet.</div>';
-      return;
-    }
-    messages.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-    let html = '';
-    messages.forEach(msg => {
-      const code = extractCode(msg.intro || msg.text || '');
-      const preview = (msg.intro || msg.text || '').substring(0, 100);
-      html += `
-        <div class="email-item">
-          <div class="email-icon"><i class="fas fa-envelope"></i></div>
-          <div class="email-content">
-            <div class="email-subject">${escapeHtml(msg.subject || '(No Subject)')}</div>
-            <div class="email-sender"><i class="fas fa-user-circle"></i> ${escapeHtml(msg.from?.address || 'Unknown')} <span>${new Date(msg.createdAt).toLocaleString()}</span></div>
-            <div class="email-body-preview">${escapeHtml(preview)}${code ? `<div class="verification-code" data-code="${escapeHtml(code)}">${escapeHtml(code)} <i class="fas fa-copy"></i></div>` : ''}</div>
-          </div>
-        </div>
-      `;
-    });
-    inboxList.innerHTML = html;
+  function showLoading(message) {
+    inboxList.innerHTML = `<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> ${message}</div>`;
   }
 
-  inboxList.addEventListener('click', function(e) {
-    const codeElement = e.target.closest('.verification-code');
-    if (!codeElement) return;
-    const code = codeElement.getAttribute('data-code');
-    if (!code) return;
-    navigator.clipboard.writeText(code).then(() => {
-      const originalHtml = codeElement.innerHTML;
-      codeElement.innerHTML = 'Copied! <i class="fas fa-check"></i>';
-      setTimeout(() => codeElement.innerHTML = originalHtml, 1500);
-    }).catch(() => {
-      const textArea = document.createElement('textarea');
-      textArea.value = code;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      const originalHtml = codeElement.innerHTML;
-      codeElement.innerHTML = 'Copied! <i class="fas fa-check"></i>';
-      setTimeout(() => codeElement.innerHTML = originalHtml, 1500);
-    });
-  });
-
-  function extractCode(text) {
-    const patterns = [/\b(\d{4,8})\b/, /\b([A-Z0-9]{6,10})\b/i, /verification code[:\s]*([A-Z0-9]+)/i, /code[:\s]*([A-Z0-9]+)/i, /OTP[:\s]*([A-Z0-9]+)/i];
-    for (const p of patterns) {
-      const m = text.match(p);
-      if (m && m[1] && m[1].length >= 4 && m[1].length <= 12) return m[1];
-    }
-    return null;
+  function showError(message) {
+    inboxList.innerHTML = `<div class="no-mails"><i class="fas fa-exclamation-triangle"></i><br>${message}</div>`;
   }
 
   function escapeHtml(text) {
     return String(text || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
   }
 
+  function enrichText(rawText) {
+    let escaped = escapeHtml(rawText);
+    let div = document.createElement('div');
+    div.innerHTML = escaped;
+
+    function highlightCodes(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        const regex = /\b(\d{4,8}|[A-Z0-9]{6,10})\b/g;
+        let match;
+        let lastIndex = 0;
+        let fragment = document.createDocumentFragment();
+        while ((match = regex.exec(text)) !== null) {
+          if (match.index > lastIndex) {
+            fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
+          }
+          const span = document.createElement('span');
+          span.className = 'clickable-code';
+          span.setAttribute('data-code', match[1]);
+          span.textContent = match[1];
+          fragment.appendChild(span);
+          lastIndex = regex.lastIndex;
+        }
+        if (lastIndex < text.length) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+        }
+        node.parentNode.replaceChild(fragment, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(child => highlightCodes(child));
+      }
+    }
+
+    function linkifyTextNodes(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        const urlRegex = /(https?:\/\/[^\s<]+)/g;
+        let match;
+        let lastIndex = 0;
+        let fragment = document.createDocumentFragment();
+        while ((match = urlRegex.exec(text)) !== null) {
+          if (match.index > lastIndex) {
+            fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
+          }
+          const a = document.createElement('a');
+          a.href = match[1];
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = match[1];
+          fragment.appendChild(a);
+          lastIndex = urlRegex.lastIndex;
+        }
+        if (lastIndex < text.length) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+        }
+        node.parentNode.replaceChild(fragment, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(child => linkifyTextNodes(child));
+      }
+    }
+
+    linkifyTextNodes(div);
+    highlightCodes(div);
+
+    return div.innerHTML;
+  }
+
+  async function displayMessages(messages) {
+    mailCount.textContent = messages.length;
+    if (messages.length === 0) {
+      inboxList.innerHTML = '<div class="no-mails"><i class="fas fa-envelope-open-text"></i></div>';
+      return;
+    }
+    messages.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    let html = '';
+    for (const msg of messages) {
+      let fullText = msg.intro || msg.text || '';
+      try {
+        const res = await fetchWithProxy(`${API_BASE}/messages/${msg.id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          fullText = data.text || data.intro || fullText;
+        }
+      } catch(e) {}
+
+      const previewText = fullText.substring(0, 300);
+      const enrichedPreview = enrichText(previewText);
+      const subject = escapeHtml(msg.subject || '(No Subject)');
+      const from = escapeHtml(msg.from?.address || 'Unknown');
+      const date = new Date(msg.createdAt).toLocaleString();
+
+      html += `
+        <div class="email-item" data-id="${msg.id}" data-full="${encodeURIComponent(fullText)}">
+          <div class="email-icon"><i class="fas fa-envelope"></i></div>
+          <div class="email-content">
+            <div class="email-subject">${subject}</div>
+            <div class="email-sender"><i class="fas fa-user-circle"></i> ${from} <span>${date}</span></div>
+            <div class="email-body-preview">${enrichedPreview}</div>
+            ${fullText.length > 300 ? '<button class="read-more-btn" data-id="'+msg.id+'">Read Full Message</button>' : ''}
+          </div>
+        </div>
+      `;
+    }
+    inboxList.innerHTML = html;
+
+    document.querySelectorAll('.read-more-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const id = this.getAttribute('data-id');
+        const msg = messages.find(m => m.id === id);
+        if (msg) openModal(msg);
+      });
+    });
+
+    document.querySelectorAll('.email-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const msg = messages.find(m => m.id === id);
+        if (msg) openModal(msg);
+      });
+    });
+
+    inboxList.querySelectorAll('.clickable-code').forEach(codeEl => {
+      codeEl.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const code = this.getAttribute('data-code');
+        if (code) copyToClipboard(code, this);
+      });
+    });
+  }
+
+  async function openModal(msg) {
+    if (!modalOverlay || !modalSubject || !modalSender || !modalBody) return;
+    let fullText = msg.intro || msg.text || '';
+    try {
+      const res = await fetchWithProxy(`${API_BASE}/messages/${msg.id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        fullText = data.text || data.intro || fullText;
+      }
+    } catch(e) {}
+
+    modalSubject.textContent = msg.subject || '(No Subject)';
+    modalSender.innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(msg.from?.address || 'Unknown')} · ${new Date(msg.createdAt).toLocaleString()}`;
+    modalBody.innerHTML = enrichText(fullText);
+    modalOverlay.classList.add('active');
+
+    modalBody.querySelectorAll('.clickable-code').forEach(codeEl => {
+      codeEl.addEventListener('click', function() {
+        const code = this.getAttribute('data-code');
+        if (code) copyToClipboard(code, this);
+      });
+    });
+  }
+
+  function copyToClipboard(text, element) {
+    navigator.clipboard.writeText(text).then(() => {
+      if (element) {
+        const original = element.innerHTML;
+        element.innerHTML = 'Copied! <i class="fas fa-check"></i>';
+        setTimeout(() => {
+          element.innerHTML = original;
+        }, 2000);
+      }
+    }).catch(() => {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      if (element) {
+        const original = element.innerHTML;
+        element.innerHTML = 'Copied! <i class="fas fa-check"></i>';
+        setTimeout(() => {
+          element.innerHTML = original;
+        }, 2000);
+      }
+    });
+  }
+
   copyEmailBtn.addEventListener('click', function() {
     const email = tempEmailDisplay.textContent;
     if (!email || email === 'Generating email...') return;
-    navigator.clipboard.writeText(email).then(() => {
-      const btn = this;
-      const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-      setTimeout(() => btn.innerHTML = orig, 2000);
-    });
+    copyToClipboard(email, this);
   });
 
-  refreshBtn.addEventListener('click', fetchMessages);
+  refreshBtn.addEventListener('click', function() {
+    fetchMessages();
+  });
 
   generateNewBtn.addEventListener('click', function() {
     if (isGenerating) return;
@@ -237,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
     currentAccount = null; token = null;
     if (refreshInterval) clearInterval(refreshInterval);
     tempEmailDisplay.textContent = 'Generating new email...';
-    inboxList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Generating...</div>';
+    showLoading('Generating new email...');
     createNewAccount();
   });
 

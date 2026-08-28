@@ -74,7 +74,7 @@
       <span class="email-display" id="tempEmail">Generating email...</span>
       <div class="email-actions">
         <span class="status-badge"><i class="fas fa-bolt"></i> Active</span>
-        <button class="btn btn-warning" id="generateNewBtn" title="Generate new email"><i class="fas fa-plus-circle"></i> New</button>
+        <button class="btn btn-warning" id="generateNewBtn" title="Generate new email"><i class="fas fa-plus-circle"></i> New Mail</button>
         <button class="btn" id="refreshBtn" title="Refresh inbox"><i class="fas fa-sync-alt"></i></button>
         <button class="btn btn-primary" id="copyEmailBtn" title="Copy address"><i class="far fa-copy"></i> Copy</button>
       </div>
@@ -97,6 +97,18 @@
       </div>
     </section>
   </main>
+
+  <!-- Modal for full message -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalSubject"></h3>
+        <button class="modal-close" id="modalClose" aria-label="Close"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-sender" id="modalSender"></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
 
   <footer class="footer">
     <span>&copy; <span id="year"></span> MailAll. All rights reserved.</span>
