@@ -42,7 +42,7 @@ body {
   position: relative;
 }
 
-/* ---------- অ্যানিমেটেড ব্যাকগ্রাউন্ড (সূক্ষ্ম ও সুন্দর) ---------- */
+/* ---------- অ্যানিমেটেড ব্যাকগ্রাউন্ড ---------- */
 body::before,
 body::after {
   content: '';
@@ -53,7 +53,6 @@ body::after {
   opacity: 0.08;
   filter: blur(100px);
 }
-
 body::before {
   width: 500px;
   height: 500px;
@@ -62,7 +61,6 @@ body::before {
   left: -150px;
   animation: floatBg1 25s ease-in-out infinite;
 }
-
 body::after {
   width: 400px;
   height: 400px;
@@ -71,15 +69,13 @@ body::after {
   right: -120px;
   animation: floatBg2 30s ease-in-out infinite;
 }
-
 @keyframes floatBg1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(80px, 60px) scale(1.2); }
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(80px,60px) scale(1.2); }
 }
-
 @keyframes floatBg2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-70px, -50px) scale(1.15); }
+  0%,100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-70px,-50px) scale(1.15); }
 }
 
 /* ---------- Navbar ---------- */
@@ -106,7 +102,6 @@ body::after {
   gap: 10px;
   text-decoration: none;
 }
-
 .navbar .logo i {
   font-size: 30px;
   background: linear-gradient(135deg, var(--accent), #1e40af);
@@ -114,7 +109,6 @@ body::after {
   -webkit-text-fill-color: transparent;
   animation: bounceIcon 2.5s ease-in-out infinite;
 }
-
 .navbar .logo span {
   font-weight: 700;
   font-size: 1.6rem;
@@ -123,19 +117,40 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 @keyframes bounceIcon {
-  0%, 100% { transform: translateY(0); }
+  0%,100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
 
+/* ---------- ডেস্কটপ নেভ লিংক ---------- */
+.desktop-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s, border-bottom 0.2s;
+  padding: 5px 0;
+  border-bottom: 2px solid transparent;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Nav Actions ---------- */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* ---------- থিম টগল (স্পিন অ্যানিমেশন বাদ) ---------- */
+/* ---------- থিম টগল ---------- */
 .theme-toggle {
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -157,13 +172,13 @@ body::after {
   font-size: 1.1rem;
 }
 
-/* ---------- হ্যামবার্গার মেনু ---------- */
+/* ---------- হ্যামবার্গার (মোবাইল) ---------- */
 .menu-toggle {
   background: transparent;
   border: none;
   width: 38px;
   height: 38px;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -171,14 +186,7 @@ body::after {
   transition: var(--transition);
   position: relative;
   z-index: 101;
-  animation: menuPulse 2s ease-in-out infinite;
 }
-
-@keyframes menuPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
 .menu-toggle .bar {
   display: block;
   width: 22px;
@@ -188,7 +196,6 @@ body::after {
   transition: 0.4s;
   border-radius: 2px;
 }
-
 .menu-toggle.active .bar:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
@@ -199,7 +206,7 @@ body::after {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* ---------- ফুলস্ক্রিন ওভারলে মেনু ---------- */
+/* ---------- মোবাইল ওভারলে মেনু ---------- */
 .menu-overlay {
   position: fixed;
   inset: 0;
@@ -217,7 +224,6 @@ body::after {
   opacity: 1;
   visibility: visible;
 }
-
 .menu-container {
   background: var(--surface);
   border-radius: 16px;
@@ -230,16 +236,10 @@ body::after {
   box-shadow: var(--shadow);
   transform: scale(0.9);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-  animation: containerFloat 3s ease-in-out infinite;
 }
 .menu-overlay.active .menu-container {
   transform: scale(1);
 }
-@keyframes containerFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
 .menu-item {
   display: flex;
   align-items: center;
@@ -391,7 +391,7 @@ body::after {
 .feature-chip:nth-child(3) { animation-delay: 1s; }
 .feature-chip:nth-child(4) { animation-delay: 1.5s; }
 @keyframes chipFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
+  0%,100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-4px) rotate(1deg); }
 }
 .feature-chip i { color: var(--accent); font-size: 0.8rem; }
@@ -433,9 +433,9 @@ body::after {
 .email-item {
   background: var(--surface-alt);
   border-radius: 10px;
-  padding: 14px 16px;  /* বাড়ানো হয়েছে */
+  padding: 14px 16px;
   display: flex;
-  gap: 12px;           /* বাড়ানো হয়েছে */
+  gap: 12px;
   border: 1px solid var(--border);
   transition: var(--transition);
   cursor: pointer;
@@ -444,53 +444,53 @@ body::after {
 }
 .email-item:hover { border-color: var(--accent); background: var(--surface); }
 .email-icon {
-  width: 36px;          /* বড় করা হয়েছে */
-  height: 36px;         /* বড় করা হয়েছে */
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
   background: rgba(37,99,235,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent-light);
-  font-size: 1rem;      /* বড় করা হয়েছে */
+  font-size: 1rem;
   flex-shrink: 0;
 }
 .email-content {
   flex: 1;
   min-width: 0;
 }
-.email-subject { 
-  font-weight: 600; 
-  color: var(--text); 
-  margin-bottom: 4px;   /* বাড়ানো হয়েছে */
-  font-size: 0.95rem;   /* বড় করা হয়েছে */
+.email-subject {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+  font-size: 0.95rem;
 }
-.email-sender { 
-  color: var(--text-muted); 
-  font-size: 0.75rem;   /* বড় করা হয়েছে */
-  display: flex; 
-  gap: 6px; 
-  margin-bottom: 6px;   /* বাড়ানো হয়েছে */
-  flex-wrap: wrap; 
+.email-sender {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
 }
 .email-body-preview {
   color: var(--text-secondary);
-  font-size: 0.85rem;   /* বড় করা হয়েছে */
+  font-size: 0.85rem;
   line-height: 1.5;
   background: var(--surface);
-  padding: 8px 10px;    /* বাড়ানো হয়েছে */
+  padding: 8px 10px;
   border-radius: 6px;
   border-left: 3px solid var(--accent);
   word-break: break-word;
   overflow-wrap: anywhere;
-  max-height: 120px;    /* বাড়ানো হয়েছে */
+  max-height: 120px;
   overflow-y: auto;
 }
 .read-more-btn {
   background: none;
   border: none;
   color: var(--accent);
-  font-size: 0.75rem;   /* বড় করা হয়েছে */
+  font-size: 0.75rem;
   cursor: pointer;
   padding: 4px 0;
   margin-top: 4px;
@@ -509,7 +509,7 @@ body::after {
   color: var(--text-muted);
 }
 .no-mails i {
-  font-size: 18rem;
+  font-size: 10rem; /* ডেস্কটপের জন্য কমানো হয়েছে */
   margin-bottom: 10px;
   color: var(--border);
   animation: floatEnvelope 2.5s ease-in-out infinite;
@@ -520,7 +520,7 @@ body::after {
   margin-top: 5px;
 }
 @keyframes floatEnvelope {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
+  0%,100% { transform: translateY(0) rotate(0deg); }
   25% { transform: translateY(-12px) rotate(-3deg); }
   50% { transform: translateY(0) rotate(0deg); }
   75% { transform: translateY(12px) rotate(3deg); }
@@ -704,14 +704,87 @@ body::after {
 .modal-content::-webkit-scrollbar-track { background: transparent; }
 .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
-/* ---------- Responsive ---------- */
-@media (max-width: 1200px) {
-  .no-mails i {
-    font-size: 14rem;
+/* ---------- Responsive Breakpoints ---------- */
+
+/* ডেস্কটপ ও ল্যাপটপ (বড় স্ক্রিন) */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+    padding: 20px;
+    gap: 20px;
   }
+  .email-card {
+    padding: 20px;
+  }
+  .email-display {
+    font-size: 1.1rem;
+  }
+  .btn {
+    padding: 9px 16px;
+    font-size: 0.85rem;
+  }
+  .feature-chip {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+  }
+  .inbox-list {
+    min-height: 350px;  /* আগের 250px থেকে বাড়ানো */
+    max-height: 550px;  /* আগের 450px থেকে বাড়ানো */
+  }
+  .email-item {
+    padding: 16px 20px;
+  }
+  .email-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+  .email-subject { font-size: 1rem; }
+  .email-sender { font-size: 0.8rem; }
+  .email-body-preview { font-size: 0.9rem; }
+  .no-mails i { font-size: 9rem; }  /* ডেস্কটপে আরও ছোট */
 }
 
-@media (max-width: 768px) {
+/* ট্যাবলেট (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    max-width: 700px;
+    padding: 16px;
+  }
+  .desktop-nav {
+    gap: 15px;
+  }
+  .nav-link {
+    font-size: 0.85rem;
+  }
+  .email-card {
+    padding: 16px;
+  }
+  .email-display {
+    font-size: 1rem;
+  }
+  .btn {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  .inbox-list {
+    min-height: 300px;  /* বাড়ানো */
+    max-height: 500px;  /* বাড়ানো */
+  }
+  .email-item {
+    padding: 12px 14px;
+  }
+  .no-mails i { font-size: 8rem; }  /* ট্যাবলেটে ছোট */
+}
+
+/* মোবাইল বড় (480px - 767px) */
+@media (max-width: 767px) {
+  .desktop-nav {
+    display: none;
+  }
+  .menu-toggle {
+    display: flex;
+  }
   .navbar {
     height: 60px;
     padding: 0 14px;
@@ -725,16 +798,23 @@ body::after {
   .theme-toggle i { font-size: 1rem; }
   .menu-toggle .bar { width: 20px; }
   .container { padding: 10px; }
-  .email-card { padding: 12px; }
+  .email-card { padding: 12px; gap: 8px; }
   .email-display { font-size: 0.9rem; }
   .btn { padding: 6px 10px; font-size: 0.7rem; }
   .feature-chip { font-size: 0.65rem; padding: 3px 8px; }
-  .inbox-list { max-height: 350px; }
-  .no-mails i { font-size: 10rem; }
+  .inbox-list { 
+    min-height: 250px; 
+    max-height: 400px; 
+  }
   .email-item { padding: 10px 12px; }
   .email-icon { width: 32px; height: 32px; font-size: 0.9rem; }
+  .email-subject { font-size: 0.85rem; }
+  .email-sender { font-size: 0.7rem; }
+  .email-body-preview { font-size: 0.78rem; }
+  .no-mails i { font-size: 7rem; }
 }
 
+/* মোবাইল ছোট (480px পর্যন্ত) */
 @media (max-width: 480px) {
   .navbar {
     height: 56px;
@@ -753,11 +833,14 @@ body::after {
   .email-display { font-size: 0.85rem; }
   .btn { padding: 5px 8px; font-size: 0.65rem; }
   .feature-chip { font-size: 0.6rem; padding: 2px 7px; }
-  .inbox-list { max-height: 280px; }
+  .inbox-list { 
+    min-height: 220px; 
+    max-height: 350px; 
+  }
   .email-item { padding: 8px 10px; }
   .email-icon { width: 28px; height: 28px; font-size: 0.8rem; }
-  .email-subject { font-size: 0.85rem; }
-  .email-sender { font-size: 0.7rem; }
-  .email-body-preview { font-size: 0.78rem; }
-  .no-mails i { font-size: 8rem; }
+  .email-subject { font-size: 0.8rem; }
+  .email-sender { font-size: 0.65rem; }
+  .email-body-preview { font-size: 0.72rem; }
+  .no-mails i { font-size: 6rem; }
 }

@@ -11,8 +11,6 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mailall.netlify.app/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MailAll – Instant Temporary Email">
-  <meta name="twitter:description" content="Free disposable email address for anonymous sign-ups and verification.">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,10 +45,21 @@
       <i class="fas fa-envelope-open-text"></i>
       <span>MailAll</span>
     </a>
+
+    <!-- ডেস্কটপ নেভ লিংক (মোবাইলে লুকানো) -->
+    <div class="desktop-nav">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="privacy.html" class="nav-link">Privacy Policy</a>
+      <a href="terms.html" class="nav-link">Terms</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
+
     <div class="nav-actions">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
         <i class="fas fa-moon" id="themeIcon"></i>
       </button>
+      <!-- মোবাইল হ্যামবার্গার (ডেস্কটপে লুকানো) -->
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" title="Menu">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -59,6 +68,7 @@
     </div>
   </nav>
 
+  <!-- মোবাইল ফুলস্ক্রিন ওভারলে মেনু -->
   <div class="menu-overlay" id="menuOverlay">
     <div class="menu-container">
       <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>

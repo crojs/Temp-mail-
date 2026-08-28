@@ -6,39 +6,41 @@
   <title>Contact Us – MailAll</title>
   <meta name="description" content="Contact MailAll support team for any questions, feedback, or partnership inquiries.">
   <link rel="canonical" href="https://mailall.netlify.app/contact.html">
-  <meta property="og:title" content="Contact Us – MailAll">
-  <meta property="og:description" content="Contact MailAll support team.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mailall.netlify.app/contact.html">
-  
-  <!-- Google Search Console Verification -->
+  <!-- Google Search Console -->
   <meta name="google-site-verification" content="d65-sBvVulBlxFLQzlz-X7MFoewdhZaYgc4i-1GSTPA" />
-  
-  <!-- Favicon Links -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon-96x96.png?v=20260828" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20260828" />
   <link rel="shortcut icon" href="/favicon.ico?v=20260828" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260828" />
   <meta name="apple-mobile-web-app-title" content="MailAll" />
   <link rel="manifest" href="/site.webmanifest?v=20260828" />
-
-  <!-- Fonts & CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="navbar">
     <a href="index.html" class="logo"><i class="fas fa-envelope-open-text"></i><span>MailAll</span></a>
+    <div class="desktop-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="privacy.html" class="nav-link">Privacy Policy</a>
+      <a href="terms.html" class="nav-link">Terms</a>
+      <a href="contact.html" class="nav-link active">Contact</a>
+      <a href="about.html" class="nav-link">About</a>
+    </div>
     <div class="nav-actions">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" title="Menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
     </div>
   </nav>
   <div class="menu-overlay" id="menuOverlay">
     <div class="menu-container">
       <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Home</a>
       <a href="privacy.html" class="menu-item"><i class="fas fa-lock"></i> Privacy Policy</a>
-      <a href="terms.html" class="menu-item"><i class="fas fa-file-alt"></i> Terms of Service</a>
+      <a href="terms.html" class="menu-item"><i class="fas fa-file-alt"></i> Terms</a>
       <a href="contact.html" class="menu-item"><i class="fas fa-envelope"></i> Contact</a>
       <a href="about.html" class="menu-item"><i class="fas fa-info-circle"></i> About</a>
     </div>
@@ -46,21 +48,17 @@
 
   <main class="content-page">
     <h1>Contact Us</h1>
-    <p>We value your feedback and are here to assist you. Please use one of the methods below to get in touch.</p>
+    <p>We value your feedback. Reach out to us:</p>
     <h2>Email Support</h2>
-    <p>For general inquiries, support requests, or bug reports, email us at <a href="mailto:support@mailall.netlify.app">support@mailall.netlify.app</a>. We aim to respond within 48 hours.</p>
+    <p><a href="mailto:support@mailall.netlify.app">support@mailall.netlify.app</a></p>
     <h2>Business &amp; Partnerships</h2>
-    <p>If you are interested in advertising, collaboration, or other business opportunities, contact <a href="mailto:business@mailall.netlify.app">business@mailall.netlify.app</a>.</p>
-    <h2>Privacy &amp; Legal</h2>
-    <p>For privacy-related concerns or legal notices, please reach out to <a href="mailto:legal@mailall.netlify.app">legal@mailall.netlify.app</a>.</p>
+    <p><a href="mailto:business@mailall.netlify.app">business@mailall.netlify.app</a></p>
     <h2>Social Media</h2>
-    <p>Follow us on social media for updates:</p>
     <ul>
       <li><i class="fab fa-twitter"></i> Twitter: @mailall</li>
       <li><i class="fab fa-facebook"></i> Facebook: /mailall</li>
       <li><i class="fab fa-github"></i> GitHub: mailall</li>
     </ul>
-    <p>We appreciate your interest in MailAll and will do our best to address your concerns promptly.</p>
   </main>
 
   <footer class="footer">
