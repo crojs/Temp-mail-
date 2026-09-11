@@ -14,7 +14,6 @@
   --radius: 14px;
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
 }
-
 [data-theme="dark"] {
   --bg: #0f172a;
   --surface: #1e293b;
@@ -26,9 +25,7 @@
   --shadow: 0 30px 60px rgba(0,0,0,0.5);
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
@@ -41,10 +38,7 @@ body {
   line-height: 1.6;
   position: relative;
 }
-
-/* ---------- অ্যানিমেটেড ব্যাকগ্রাউন্ড ---------- */
-body::before,
-body::after {
+body::before, body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
@@ -53,32 +47,11 @@ body::after {
   opacity: 0.08;
   filter: blur(100px);
 }
-body::before {
-  width: 500px;
-  height: 500px;
-  background: var(--accent);
-  top: -150px;
-  left: -150px;
-  animation: floatBg1 25s ease-in-out infinite;
-}
-body::after {
-  width: 400px;
-  height: 400px;
-  background: var(--success);
-  bottom: -120px;
-  right: -120px;
-  animation: floatBg2 30s ease-in-out infinite;
-}
-@keyframes floatBg1 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(80px,60px) scale(1.2); }
-}
-@keyframes floatBg2 {
-  0%,100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(-70px,-50px) scale(1.15); }
-}
+body::before { width: 500px; height: 500px; background: var(--accent); top: -150px; left: -150px; animation: floatBg1 25s ease-in-out infinite; }
+body::after { width: 400px; height: 400px; background: var(--success); bottom: -120px; right: -120px; animation: floatBg2 30s ease-in-out infinite; }
+@keyframes floatBg1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(80px,60px) scale(1.2); } }
+@keyframes floatBg2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-70px,-50px) scale(1.15); } }
 
-/* ---------- Navbar ---------- */
 .navbar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -95,13 +68,7 @@ body::after {
   width: 100%;
   backdrop-filter: blur(10px);
 }
-
-.navbar .logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
+.navbar .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 .navbar .logo i {
   font-size: 30px;
   background: linear-gradient(135deg, var(--accent), #1e40af);
@@ -117,17 +84,9 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-@keyframes bounceIcon {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
+@keyframes bounceIcon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-/* ---------- ডেস্কটপ নেভ লিংক ---------- */
-.desktop-nav {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
+.desktop-nav { display: flex; gap: 20px; align-items: center; }
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
@@ -137,20 +96,10 @@ body::after {
   padding: 5px 0;
   border-bottom: 2px solid transparent;
 }
-.nav-link:hover,
-.nav-link.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
+.nav-link:hover, .nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* ---------- Nav Actions ---------- */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.nav-actions { display: flex; align-items: center; gap: 8px; }
 
-/* ---------- থিম টগল ---------- */
 .theme-toggle {
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -164,15 +113,9 @@ body::after {
   color: var(--text);
   transition: var(--transition);
 }
-.theme-toggle:hover {
-  background: var(--border);
-  transform: rotate(15deg);
-}
-.theme-toggle i {
-  font-size: 1.1rem;
-}
+.theme-toggle:hover { background: var(--border); transform: rotate(15deg); }
+.theme-toggle i { font-size: 1.1rem; }
 
-/* ---------- হ্যামবার্গার (মোবাইল) ---------- */
 .menu-toggle {
   background: transparent;
   border: none;
@@ -196,17 +139,10 @@ body::after {
   transition: 0.4s;
   border-radius: 2px;
 }
-.menu-toggle.active .bar:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-.menu-toggle.active .bar:nth-child(2) {
-  opacity: 0;
-}
-.menu-toggle.active .bar:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
+.menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+.menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-/* ---------- মোবাইল ওভারলে মেনু ---------- */
 .menu-overlay {
   position: fixed;
   inset: 0;
@@ -220,10 +156,7 @@ body::after {
   visibility: hidden;
   transition: opacity 0.3s, visibility 0.3s;
 }
-.menu-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+.menu-overlay.active { opacity: 1; visibility: visible; }
 .menu-container {
   background: var(--surface);
   border-radius: 16px;
@@ -237,9 +170,7 @@ body::after {
   transform: scale(0.9);
   transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
-.menu-overlay.active .menu-container {
-  transform: scale(1);
-}
+.menu-overlay.active .menu-container { transform: scale(1); }
 .menu-item {
   display: flex;
   align-items: center;
@@ -253,22 +184,10 @@ body::after {
   background: var(--surface-alt);
   transition: background 0.2s, transform 0.2s;
 }
-.menu-item i {
-  width: 22px;
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--accent);
-}
-.menu-item:hover {
-  background: var(--accent);
-  color: white;
-  transform: translateX(4px);
-}
-.menu-item:hover i {
-  color: white;
-}
+.menu-item i { width: 22px; text-align: center; font-size: 1.2rem; color: var(--accent); }
+.menu-item:hover { background: var(--accent); color: white; transform: translateX(4px); }
+.menu-item:hover i { color: white; }
 
-/* ---------- Container ---------- */
 .container {
   max-width: 760px;
   margin: 0 auto;
@@ -302,12 +221,7 @@ body::after {
   flex: 1;
   min-width: 150px;
 }
-.email-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-}
+.email-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
 .status-badge {
   background: rgba(5,150,105,0.15);
   border: 1px solid rgba(5,150,105,0.3);
@@ -321,7 +235,6 @@ body::after {
   gap: 4px;
 }
 
-/* ---------- বাটন ---------- */
 .btn {
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -338,42 +251,14 @@ body::after {
   white-space: nowrap;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
-.btn:hover {
-  background: var(--border);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-.btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-.btn-primary {
-  background: var(--accent);
-  border: none;
-  color: white;
-  box-shadow: 0 3px 8px rgba(37,99,235,0.3);
-}
-.btn-primary:hover {
-  background: #1d4ed8;
-  box-shadow: 0 4px 12px rgba(37,99,235,0.4);
-}
-.btn-warning {
-  background: #f59e0b;
-  border: none;
-  color: white;
-  box-shadow: 0 3px 8px rgba(245,158,11,0.3);
-}
-.btn-warning:hover {
-  background: #d97706;
-  box-shadow: 0 4px 12px rgba(245,158,11,0.4);
-}
+.btn:hover { background: var(--border); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+.btn:active { transform: translateY(0); box-shadow: none; }
+.btn-primary { background: var(--accent); border: none; color: white; box-shadow: 0 3px 8px rgba(37,99,235,0.3); }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-warning { background: #f59e0b; border: none; color: white; box-shadow: 0 3px 8px rgba(245,158,11,0.3); }
+.btn-warning:hover { background: #d97706; }
 
-/* ---------- ফিচার চিপ ---------- */
-.feature-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+.feature-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 .feature-chip {
   background: var(--surface-alt);
   border: 1px solid var(--border);
@@ -390,24 +275,11 @@ body::after {
 .feature-chip:nth-child(2) { animation-delay: 0.5s; }
 .feature-chip:nth-child(3) { animation-delay: 1s; }
 .feature-chip:nth-child(4) { animation-delay: 1.5s; }
-@keyframes chipFloat {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-4px) rotate(1deg); }
-}
+@keyframes chipFloat { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-4px) rotate(1deg); } }
 .feature-chip i { color: var(--accent); font-size: 0.8rem; }
 
-/* ---------- ইনবক্স ---------- */
-.inbox-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.inbox-title {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--text);
-}
+.inbox-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.inbox-title { font-weight: 700; font-size: 1.2rem; color: var(--text); }
 .inbox-count {
   background: var(--accent);
   color: white;
@@ -455,24 +327,9 @@ body::after {
   font-size: 1rem;
   flex-shrink: 0;
 }
-.email-content {
-  flex: 1;
-  min-width: 0;
-}
-.email-subject {
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 4px;
-  font-size: 0.95rem;
-}
-.email-sender {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-  flex-wrap: wrap;
-}
+.email-content { flex: 1; min-width: 0; }
+.email-subject { font-weight: 600; color: var(--text); margin-bottom: 4px; font-size: 0.95rem; }
+.email-sender { color: var(--text-muted); font-size: 0.75rem; display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
 .email-body-preview {
   color: var(--text-secondary);
   font-size: 0.85rem;
@@ -497,7 +354,6 @@ body::after {
 }
 .read-more-btn:hover { text-decoration: underline; }
 
-/* ---------- Empty State ---------- */
 .no-mails {
   text-align: center;
   display: flex;
@@ -509,16 +365,13 @@ body::after {
   color: var(--text-muted);
 }
 .no-mails i {
-  font-size: 10rem; /* ডেস্কটপের জন্য কমানো হয়েছে */
+  font-size: 6rem;
   margin-bottom: 10px;
   color: var(--border);
   animation: floatEnvelope 2.5s ease-in-out infinite;
   display: inline-block;
 }
-.no-mails p {
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
+.no-mails p { font-size: 0.8rem; margin-top: 5px; }
 @keyframes floatEnvelope {
   0%,100% { transform: translateY(0) rotate(0deg); }
   25% { transform: translateY(-12px) rotate(-3deg); }
@@ -526,7 +379,9 @@ body::after {
   75% { transform: translateY(12px) rotate(3deg); }
 }
 
-/* ---------- কোড এবং লিংক ---------- */
+.loading-spinner { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; }
+.loading-spinner i { margin-right: 8px; color: var(--accent); }
+
 .clickable-code {
   background: rgba(37,99,235,0.15);
   border: 1px solid var(--accent);
@@ -539,22 +394,14 @@ body::after {
   letter-spacing: 0.5px;
   font-size: 0.75rem;
 }
-.clickable-code:hover {
-  background: rgba(37,99,235,0.3);
-}
-.email-body-preview a,
-.modal-body a {
+.clickable-code:hover { background: rgba(37,99,235,0.3); }
+.email-body-preview a, .modal-body a {
   color: var(--accent);
   text-decoration: underline;
   word-break: break-all;
   font-size: 0.75rem;
 }
-.email-body-preview a:hover,
-.modal-body a:hover {
-  color: var(--accent-light);
-}
 
-/* ---------- Modal ---------- */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -569,10 +416,7 @@ body::after {
   transition: opacity 0.3s, visibility 0.3s;
   padding: 20px;
 }
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+.modal-overlay.active { opacity: 1; visibility: visible; }
 .modal-content {
   background: var(--surface);
   border-radius: var(--radius);
@@ -584,38 +428,12 @@ body::after {
   padding: 18px;
   animation: modalPop 0.3s ease;
 }
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-.modal-header h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text);
-}
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color 0.2s;
-}
-.modal-close:hover {
-  color: var(--text);
-}
-.modal-sender {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-  margin-bottom: 12px;
-}
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-header { display: flex; justify-content: space-between; align-items: start; gap: 10px; margin-bottom: 8px; }
+.modal-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--text-muted); }
+.modal-close:hover { color: var(--text); }
+.modal-sender { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 12px; }
 .modal-body {
   color: var(--text-secondary);
   line-height: 1.6;
@@ -623,12 +441,7 @@ body::after {
   overflow-wrap: anywhere;
   font-size: 0.9rem;
 }
-.modal-body .clickable-code {
-  margin: 2px 0;
-  font-size: 0.85rem;
-}
 
-/* ---------- Content Pages ---------- */
 .content-page {
   max-width: 760px;
   margin: 0 auto;
@@ -646,33 +459,12 @@ body::after {
   -webkit-text-fill-color: transparent;
   animation: fadeSlideIn 0.8s ease;
 }
-.content-page h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 22px 0 10px;
-  color: var(--text);
-}
-.content-page p {
-  margin-bottom: 12px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 0.9rem;
-}
-.content-page ul {
-  margin: 10px 0;
-  padding-left: 25px;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-.content-page li {
-  margin-bottom: 6px;
-}
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+.content-page h2 { font-size: 1.3rem; font-weight: 600; margin: 22px 0 10px; color: var(--text); }
+.content-page p { margin-bottom: 12px; color: var(--text-secondary); line-height: 1.7; font-size: 0.9rem; }
+.content-page ul { margin: 10px 0; padding-left: 25px; color: var(--text-secondary); font-size: 0.9rem; }
+.content-page li { margin-bottom: 6px; }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ---------- Footer ---------- */
 .footer {
   text-align: center;
   padding: 16px;
@@ -681,22 +473,10 @@ body::after {
   border-top: 1px solid var(--border);
   background: var(--surface);
 }
-.footer-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
-}
-.footer-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.75rem;
-  transition: color 0.2s, transform 0.2s;
-}
+.footer-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
 .footer-links a:hover { color: var(--accent); }
 
-/* ---------- Scrollbar ---------- */
 .inbox-list::-webkit-scrollbar { width: 4px; }
 .inbox-list::-webkit-scrollbar-track { background: transparent; }
 .inbox-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
@@ -704,97 +484,40 @@ body::after {
 .modal-content::-webkit-scrollbar-track { background: transparent; }
 .modal-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 
-/* ---------- Responsive Breakpoints ---------- */
-
-/* ডেস্কটপ ও ল্যাপটপ (বড় স্ক্রিন) */
 @media (min-width: 1024px) {
-  .container {
-    max-width: 900px;
-    padding: 20px;
-    gap: 20px;
-  }
-  .email-card {
-    padding: 20px;
-  }
-  .email-display {
-    font-size: 1.1rem;
-  }
-  .btn {
-    padding: 9px 16px;
-    font-size: 0.85rem;
-  }
-  .feature-chip {
-    font-size: 0.8rem;
-    padding: 6px 14px;
-  }
-  .inbox-list {
-    min-height: 350px;  /* আগের 250px থেকে বাড়ানো */
-    max-height: 550px;  /* আগের 450px থেকে বাড়ানো */
-  }
-  .email-item {
-    padding: 16px 20px;
-  }
-  .email-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
-  }
+  .container { max-width: 900px; padding: 20px; gap: 20px; }
+  .email-card { padding: 20px; }
+  .email-display { font-size: 1.1rem; }
+  .btn { padding: 9px 16px; font-size: 0.85rem; }
+  .feature-chip { font-size: 0.8rem; padding: 6px 14px; }
+  .inbox-list { min-height: 350px; max-height: 550px; }
+  .email-item { padding: 16px 20px; }
+  .email-icon { width: 40px; height: 40px; font-size: 1.1rem; }
   .email-subject { font-size: 1rem; }
   .email-sender { font-size: 0.8rem; }
   .email-body-preview { font-size: 0.9rem; }
-  .no-mails i { font-size: 9rem; }  /* ডেস্কটপে আরও ছোট */
+  .no-mails i { font-size: 7rem; }
 }
 
-/* ট্যাবলেট (768px - 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .container {
-    max-width: 700px;
-    padding: 16px;
-  }
-  .desktop-nav {
-    gap: 15px;
-  }
-  .nav-link {
-    font-size: 0.85rem;
-  }
-  .email-card {
-    padding: 16px;
-  }
-  .email-display {
-    font-size: 1rem;
-  }
-  .btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
-  .inbox-list {
-    min-height: 300px;  /* বাড়ানো */
-    max-height: 500px;  /* বাড়ানো */
-  }
-  .email-item {
-    padding: 12px 14px;
-  }
-  .no-mails i { font-size: 8rem; }  /* ট্যাবলেটে ছোট */
+  .container { max-width: 700px; padding: 16px; }
+  .desktop-nav { gap: 15px; }
+  .nav-link { font-size: 0.85rem; }
+  .email-card { padding: 16px; }
+  .email-display { font-size: 1rem; }
+  .btn { padding: 8px 12px; font-size: 0.8rem; }
+  .inbox-list { min-height: 300px; max-height: 500px; }
+  .email-item { padding: 12px 14px; }
+  .no-mails i { font-size: 6rem; }
 }
 
-/* মোবাইল বড় (480px - 767px) */
 @media (max-width: 767px) {
-  .desktop-nav {
-    display: none;
-  }
-  .menu-toggle {
-    display: flex;
-  }
-  .navbar {
-    height: 60px;
-    padding: 0 14px;
-  }
+  .desktop-nav { display: none; }
+  .menu-toggle { display: flex; }
+  .navbar { height: 60px; padding: 0 14px; }
   .navbar .logo i { font-size: 26px; }
   .navbar .logo span { font-size: 1.4rem; }
-  .theme-toggle, .menu-toggle {
-    width: 36px;
-    height: 36px;
-  }
+  .theme-toggle, .menu-toggle { width: 36px; height: 36px; }
   .theme-toggle i { font-size: 1rem; }
   .menu-toggle .bar { width: 20px; }
   .container { padding: 10px; }
@@ -802,30 +525,20 @@ body::after {
   .email-display { font-size: 0.9rem; }
   .btn { padding: 6px 10px; font-size: 0.7rem; }
   .feature-chip { font-size: 0.65rem; padding: 3px 8px; }
-  .inbox-list { 
-    min-height: 250px; 
-    max-height: 400px; 
-  }
+  .inbox-list { min-height: 250px; max-height: 400px; }
   .email-item { padding: 10px 12px; }
   .email-icon { width: 32px; height: 32px; font-size: 0.9rem; }
   .email-subject { font-size: 0.85rem; }
   .email-sender { font-size: 0.7rem; }
   .email-body-preview { font-size: 0.78rem; }
-  .no-mails i { font-size: 7rem; }
+  .no-mails i { font-size: 5rem; }
 }
 
-/* মোবাইল ছোট (480px পর্যন্ত) */
 @media (max-width: 480px) {
-  .navbar {
-    height: 56px;
-    padding: 0 10px;
-  }
+  .navbar { height: 56px; padding: 0 10px; }
   .navbar .logo i { font-size: 24px; }
   .navbar .logo span { font-size: 1.2rem; }
-  .theme-toggle, .menu-toggle {
-    width: 32px;
-    height: 32px;
-  }
+  .theme-toggle, .menu-toggle { width: 32px; height: 32px; }
   .theme-toggle i { font-size: 0.9rem; }
   .menu-toggle .bar { width: 18px; height: 2px; }
   .container { padding: 8px; }
@@ -833,14 +546,11 @@ body::after {
   .email-display { font-size: 0.85rem; }
   .btn { padding: 5px 8px; font-size: 0.65rem; }
   .feature-chip { font-size: 0.6rem; padding: 2px 7px; }
-  .inbox-list { 
-    min-height: 220px; 
-    max-height: 350px; 
-  }
+  .inbox-list { min-height: 220px; max-height: 350px; }
   .email-item { padding: 8px 10px; }
   .email-icon { width: 28px; height: 28px; font-size: 0.8rem; }
   .email-subject { font-size: 0.8rem; }
   .email-sender { font-size: 0.65rem; }
   .email-body-preview { font-size: 0.72rem; }
-  .no-mails i { font-size: 6rem; }
+  .no-mails i { font-size: 4rem; }
 }
